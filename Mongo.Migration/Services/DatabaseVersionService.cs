@@ -26,7 +26,7 @@ internal class DatabaseVersionService(
     public DocumentVersion GetLatestDatabaseVersion(IMongoDatabase db)
     {
         var migrations = GetMigrationsCollection(db).Find(m => true).ToList();
-        if (migrations == null || !migrations.Any())
+        if (migrations == null || migrations.Count == 0)
         {
             return DocumentVersion.Default();
         }

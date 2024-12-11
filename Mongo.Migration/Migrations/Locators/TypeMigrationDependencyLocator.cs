@@ -1,23 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-
 using Mongo.Migration.Extensions;
 using Mongo.Migration.Migrations.Adapters;
 
 namespace Mongo.Migration.Migrations.Locators;
 
-internal class TypeMigrationDependencyLocator<TMigrationType> : MigrationLocator<TMigrationType>
+internal class TypeMigrationDependencyLocator<TMigrationType>(IContainerProvider containerProvider)
+    : MigrationLocator<TMigrationType>
     where TMigrationType : class, IMigration
 {
-    private readonly IContainerProvider _containerProvider;
-
-    public TypeMigrationDependencyLocator(IContainerProvider containerProvider)
-    {
-        _containerProvider = containerProvider;
-    }
-
     public override void Locate()
     {
         var migrationTypes =
@@ -31,20 +23,16 @@ internal class TypeMigrationDependencyLocator<TMigrationType> : MigrationLocator
 
     private TMigrationType GetMigrationInstance(Type type)
     {
-        ConstructorInfo constructor = type.GetConstructors()[0];
+        var constructor = type.GetConstructors()[0];
+        
+        var args = constructor
+            .GetParameters()
+            .Select(o => o.ParameterType)
+            .Select(o => containerProvider.GetInstance(o))
+            .ToArray();
 
-        if (constructor != null)
-        {
-            object[] args = constructor
-                .GetParameters()
-                .Select(o => o.ParameterType)
-                .Select(o => _containerProvider.GetInstance(o))
-                .ToArray();
-
-            return Activator.CreateInstance(type, args) as TMigrationType;
-        }
-
-        return Activator.CreateInstance(type) as TMigrationType;
+        return Activator.CreateInstance(type, args) as TMigrationType;
+        
     }
 
     private class TypeComparer : IEqualityComparer<Type>

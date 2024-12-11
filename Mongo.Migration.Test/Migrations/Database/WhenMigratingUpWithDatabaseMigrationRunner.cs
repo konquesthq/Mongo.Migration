@@ -42,7 +42,7 @@ internal class WhenMigratingUpWithDatabaseMigrationRunner : DatabaseIntegrationT
     public void When_database_has_migrations_Then_latest_migrations_are_used()
     {
         // Arrange
-        InsertMigrations(new DatabaseMigration[] { new TestDatabaseMigration_0_0_1(), new TestDatabaseMigration_0_0_2() });
+        InsertMigrations([new TestDatabaseMigration_0_0_1(), new TestDatabaseMigration_0_0_2()]);
 
         // Act
         _runner.Run(_db);
@@ -58,7 +58,8 @@ internal class WhenMigratingUpWithDatabaseMigrationRunner : DatabaseIntegrationT
     {
         // Arrange
         InsertMigrations(
-            new DatabaseMigration[] { new TestDatabaseMigration_0_0_1(), new TestDatabaseMigration_0_0_2(), new TestDatabaseMigration_0_0_3() });
+            [new TestDatabaseMigration_0_0_1(), new TestDatabaseMigration_0_0_2(), new TestDatabaseMigration_0_0_3()]
+        );
 
         // Act
         _runner.Run(_db);
