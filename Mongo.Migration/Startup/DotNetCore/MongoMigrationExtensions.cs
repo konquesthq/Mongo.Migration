@@ -25,7 +25,6 @@ namespace Mongo.Migration.Startup.DotNetCore
             services.AddSingleton(typeof(IMigrationLocator<>), typeof(TypeMigrationDependencyLocator<>));
             services.AddSingleton<IDatabaseTypeMigrationDependencyLocator, DatabaseTypeMigrationDependencyLocator>();
             services.AddSingleton<ICollectionLocator, CollectionLocator>();
-            services.AddSingleton<IRuntimeVersionLocator, RuntimeVersionLocator>();
             services.AddSingleton<IStartUpVersionLocator, StartUpVersionLocator>();
             services.AddTransient<IDatabaseVersionService, DatabaseVersionService>();
             services.AddTransient<IStartUpDatabaseMigrationRunner, StartUpDatabaseMigrationRunner>();

@@ -48,7 +48,6 @@ namespace Mongo.Migration.Startup.Static
             this._containerAdapter.RegisterInstance<IMongoMigrationSettings>(this._settings);
             this._containerAdapter.RegisterSingleton<ICollectionLocator, CollectionLocator>();
             this._containerAdapter.RegisterSingleton<IDatabaseTypeMigrationDependencyLocator, DatabaseTypeMigrationDependencyLocator>();
-            this._containerAdapter.RegisterSingleton<IRuntimeVersionLocator, RuntimeVersionLocator>();
             this._containerAdapter.RegisterSingleton<IStartUpVersionLocator, StartUpVersionLocator>();
             this._containerAdapter.Register<IDatabaseVersionService, DatabaseVersionService>();
             this._containerAdapter.Register<IStartUpDatabaseMigrationRunner, StartUpDatabaseMigrationRunner>();
