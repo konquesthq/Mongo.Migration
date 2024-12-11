@@ -1,48 +1,32 @@
 ﻿using System;
-
 using Mongo.Migration.Documents.Serializers;
 using Mongo.Migration.Exceptions;
-
 using MongoDB.Bson.Serialization;
 
 namespace Mongo.Migration.Documents
 {
     public struct DocumentVersion : IComparable<DocumentVersion>
     {
-        private const char VERSION_SPLIT_CHAR = '.';
-
-        private const int MAX_LENGTH = 3;
-
+        private const char VersionSplitChar = '.';
+        private const int MaxLength = 3;
         public int Major { get; init; }
-
         public int Minor { get; init; }
-
         public int Revision { get; init; }
 
         static DocumentVersion()
         {
-            try
-            {
-                BsonSerializer.RegisterSerializer(typeof(DocumentVersion), new DocumentVersionSerializer());
-            }
-            catch (Exception)
-            {
-            }
+            BsonSerializer.TryRegisterSerializer(typeof(DocumentVersion), new DocumentVersionSerializer());
         }
-
+        
         public DocumentVersion(string version)
         {
-            string[] versionParts = version.Split(VERSION_SPLIT_CHAR);
-
-            if (versionParts.Length != MAX_LENGTH)
+            string[] versionParts = version.Split(VersionSplitChar);
+            if (versionParts.Length != MaxLength)
             {
                 throw new VersionStringToLongException(version);
             }
-
             this.Major = ParseVersionPart(versionParts[0]);
-
             this.Minor = ParseVersionPart(versionParts[1]);
-
             this.Revision = ParseVersionPart(versionParts[2]);
         }
 

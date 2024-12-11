@@ -1,10 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using Mongo.Migration.Documents.Locators;
-using Mongo.Migration.Documents.Serializers;
 using Mongo.Migration.Migrations.Adapters;
 using Mongo.Migration.Migrations.Database;
-using Mongo.Migration.Migrations.Document;
 using Mongo.Migration.Migrations.Locators;
 using Mongo.Migration.Services;
 
@@ -29,17 +27,9 @@ namespace Mongo.Migration.Startup.DotNetCore
             services.AddSingleton<ICollectionLocator, CollectionLocator>();
             services.AddSingleton<IRuntimeVersionLocator, RuntimeVersionLocator>();
             services.AddSingleton<IStartUpVersionLocator, StartUpVersionLocator>();
-
             services.AddTransient<IDatabaseVersionService, DatabaseVersionService>();
-            services.AddTransient<IDocumentVersionService, DocumentVersionService>();
-            services.AddTransient<DocumentVersionSerializer, DocumentVersionSerializer>();
-
-            services.AddTransient<IStartUpDocumentMigrationRunner, StartUpDocumentMigrationRunner>();
-            services.AddTransient<IDocumentMigrationRunner, DocumentMigrationRunner>();
-
             services.AddTransient<IStartUpDatabaseMigrationRunner, StartUpDatabaseMigrationRunner>();
             services.AddTransient<IDatabaseMigrationRunner, DatabaseMigrationRunner>();
-
             services.AddTransient<IMongoMigration, MongoMigration>();
         }
     }

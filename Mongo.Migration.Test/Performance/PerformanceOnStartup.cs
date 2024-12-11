@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
 using FluentAssertions;
-
 using Mongo.Migration.Startup.Static;
 using Mongo.Migration.Test.TestDoubles;
-
 using Mongo2Go;
-
 using MongoDB.Bson;
 using MongoDB.Driver;
-
 using NUnit.Framework;
 
 namespace Mongo.Migration.Test.Performance
@@ -19,16 +14,11 @@ namespace Mongo.Migration.Test.Performance
     [TestFixture]
     public class PerformanceTestOnStartup
     {
-        private const int DOCUMENT_COUNT = 10000;
-
-        private const string DATABASE_NAME = "PerformanceTest";
-
-        private const string COLLECTION_NAME = "Test";
-
-        private const int TOLERANCE_MS = 2800;
-
+        private const int DocumentCount = 10000;
+        private const string DatabaseName = "PerformanceTest";
+        private const string CollectionName = "Test";
+        private const int ToleranceMs = 2800;
         private MongoClient _client;
-
         private MongoDbRunner _runner;
 
         [TearDown]
@@ -57,16 +47,16 @@ namespace Mongo.Migration.Test.Performance
 
             // Act
             // Measure time of MongoDb processing without Mongo.Migration
-            this.InsertMany(DOCUMENT_COUNT, false);
+            this.InsertMany(DocumentCount, false);
             var sw = new Stopwatch();
             sw.Start();
-            this.MigrateAll(false);
+            this.MigrateAll();
             sw.Stop();
 
             this.ClearCollection();
 
             // Measure time of MongoDb processing without Mongo.Migration
-            this.InsertMany(DOCUMENT_COUNT, true);
+            this.InsertMany(DocumentCount, true);
             var swWithMigration = new Stopwatch();
             swWithMigration.Start();
             MongoMigrationClient.Initialize(this._client);
@@ -77,10 +67,10 @@ namespace Mongo.Migration.Test.Performance
             var result = swWithMigration.ElapsedMilliseconds - sw.ElapsedMilliseconds;
 
             Console.WriteLine(
-                $"MongoDB: {sw.ElapsedMilliseconds}ms, Mongo.Migration: {swWithMigration.ElapsedMilliseconds}ms, Diff: {result}ms (Tolerance: {TOLERANCE_MS}ms), Documents: {DOCUMENT_COUNT}, Migrations per Document: 2");
+                $"MongoDB: {sw.ElapsedMilliseconds}ms, Mongo.Migration: {swWithMigration.ElapsedMilliseconds}ms, Diff: {result}ms (Tolerance: {ToleranceMs}ms), Documents: {DocumentCount}, Migrations per Document: 2");
 
             // Assert
-            result.Should().BeLessThan(TOLERANCE_MS);
+            result.Should().BeLessThan(ToleranceMs);
         }
 
         private void InsertMany(int number, bool withVersion)
@@ -100,34 +90,26 @@ namespace Mongo.Migration.Test.Performance
                 documents.Add(document);
             }
 
-            this._client.GetDatabase(DATABASE_NAME).GetCollection<BsonDocument>(COLLECTION_NAME).InsertManyAsync(documents)
+            this._client.GetDatabase(DatabaseName).GetCollection<BsonDocument>(CollectionName).InsertManyAsync(documents)
                 .Wait();
         }
 
-        private void MigrateAll(bool withVersion)
+        private void MigrateAll()
         {
-            if (withVersion)
-            {
-                var versionedCollectin = this._client.GetDatabase(DATABASE_NAME)
-                    .GetCollection<TestDocumentWithTwoMigrationHighestVersion>(COLLECTION_NAME);
-                var versionedResult = versionedCollectin.FindAsync(_ => true).Result.ToListAsync().Result;
-                return;
-            }
-
-            var collection = this._client.GetDatabase(DATABASE_NAME)
-                .GetCollection<TestClass>(COLLECTION_NAME);
+            var collection = this._client.GetDatabase(DatabaseName)
+                .GetCollection<TestClass>(CollectionName);
             var result = collection.FindAsync(_ => true).Result.ToListAsync().Result;
         }
 
         private void AddDocumentsToCache()
         {
-            this.InsertMany(DOCUMENT_COUNT, false);
-            this.MigrateAll(false);
+            this.InsertMany(DocumentCount, false);
+            this.MigrateAll();
         }
 
         private void ClearCollection()
         {
-            this._client.GetDatabase(DATABASE_NAME).DropCollection(COLLECTION_NAME);
+            this._client.GetDatabase(DatabaseName).DropCollection(CollectionName);
         }
     }
 }
