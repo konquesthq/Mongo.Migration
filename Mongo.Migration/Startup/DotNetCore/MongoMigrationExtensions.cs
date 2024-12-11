@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-
 using Mongo.Migration.Documents.Locators;
 using Mongo.Migration.Migrations.Adapters;
 using Mongo.Migration.Migrations.Database;
