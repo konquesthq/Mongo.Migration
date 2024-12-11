@@ -1,9 +1,9 @@
-name: Deploy to Prod Environment
+name: Deploy to GitHub Packages
 
 on:
   workflow_run:
     workflows: ["Build and Test"]
-    branches: [main]
+    branches: [master, main]
     types:
       - completed
 
