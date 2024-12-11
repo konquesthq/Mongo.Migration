@@ -2,8 +2,8 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <OutputType>Library</OutputType>
-	  <TargetFrameworks>net6.0</TargetFrameworks>
 	  <Platforms>x64</Platforms>
+	  <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Mongo.Migration.Test\**\*.cs" />
