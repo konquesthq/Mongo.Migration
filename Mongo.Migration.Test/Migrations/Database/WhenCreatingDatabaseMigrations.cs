@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace Mongo.Migration.Test.Core.Database
 {
     [TestFixture]
-    public class DatabaseMigration_when_creating
+    public class WhenCreatingDatabaseMigrations
     {
         [Test]
         public void Then_migration_has_type_DatabaseMigration()

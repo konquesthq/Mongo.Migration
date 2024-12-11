@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Mongo.Migration.Test.Core.Database
 {
     [TestFixture]
-    internal class DatabaseMigrationRunner_when_migrating_down : DatabaseIntegrationTest
+    internal class WhenMigratingDownWithDatabaseMigrationRunner : DatabaseIntegrationTest
     {
         private IDatabaseMigrationRunner _runner;
 
