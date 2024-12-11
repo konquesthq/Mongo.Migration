@@ -1,13 +1,10 @@
 ﻿using FluentAssertions;
-
 using Mongo.Migration.Documents;
 using Mongo.Migration.Services;
-
 using MongoDB.Bson.Serialization;
-
 using NUnit.Framework;
 
-namespace Mongo.Migration.Test.MongoDB
+namespace Mongo.Migration.Test.Core
 {
     [TestFixture]
     internal class MongoRegistrator_when_registrating : IntegrationTest

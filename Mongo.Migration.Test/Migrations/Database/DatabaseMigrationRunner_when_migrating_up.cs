@@ -1,12 +1,9 @@
 ﻿using FluentAssertions;
-
 using Mongo.Migration.Documents;
 using Mongo.Migration.Migrations.Database;
-using Mongo.Migration.Test.TestDoubles;
-
 using NUnit.Framework;
 
-namespace Mongo.Migration.Test.Migrations.Database
+namespace Mongo.Migration.Test.Core.Database
 {
     [TestFixture]
     internal class DatabaseMigrationRunner_when_migrating_up : DatabaseIntegrationTest

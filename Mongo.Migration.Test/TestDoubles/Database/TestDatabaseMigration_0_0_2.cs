@@ -1,8 +1,7 @@
 ﻿using Mongo.Migration.Migrations.Database;
-
 using MongoDB.Driver;
 
-namespace Mongo.Migration.Test.TestDoubles
+namespace Mongo.Migration.Test.Core.Database
 {
     internal class TestDatabaseMigration_0_0_2 : DatabaseMigration
     {

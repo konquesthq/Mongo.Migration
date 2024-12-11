@@ -1,10 +1,8 @@
 ﻿using FluentAssertions;
-
 using Mongo.Migration.Documents;
-
 using NUnit.Framework;
 
-namespace Mongo.Migration.Test.Documents
+namespace Mongo.Migration.Test.Core
 {
     [TestFixture]
     public class DocumentVersion_When_compare

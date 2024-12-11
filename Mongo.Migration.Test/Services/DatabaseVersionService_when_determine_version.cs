@@ -1,12 +1,10 @@
 ﻿using FluentAssertions;
-
 using Mongo.Migration.Documents;
 using Mongo.Migration.Services;
-using Mongo.Migration.Test.Migrations.Database;
-
+using Mongo.Migration.Test.Core.Database;
 using NUnit.Framework;
 
-namespace Mongo.Migration.Test.Services
+namespace Mongo.Migration.Test.Core
 {
     [TestFixture]
     internal class DatabaseVersionService_when_determine_version : DatabaseIntegrationTest

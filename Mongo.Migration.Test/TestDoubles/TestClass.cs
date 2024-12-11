@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson;
 
-namespace Mongo.Migration.Test.TestDoubles
+namespace Mongo.Migration.Test.Core
 {
     public class TestClass
     {

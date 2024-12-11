@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Mongo.Migration.Documents;
 using Mongo.Migration.Migrations.Database;
 using Mongo.Migration.Startup;
 using Mongo.Migration.Startup.Static;
-
 using Mongo2Go;
-
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace Mongo.Migration.Test.Migrations.Database
+namespace Mongo.Migration.Test.Core.Database
 {
     internal class DatabaseIntegrationTest : IDisposable
     {

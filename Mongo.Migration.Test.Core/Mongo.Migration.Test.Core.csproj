@@ -36,9 +36,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Mongo.Migration\Mongo.Migration.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="..\Mongo.Migration.Test\Documents\Locators\">
-      <Link>Documents\Locators</Link>
-    </Folder>
-  </ItemGroup>
 </Project>
