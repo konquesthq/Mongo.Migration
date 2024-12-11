@@ -29,5 +29,6 @@ public static class MongoMigrationExtensions
         services.AddTransient<IStartUpDatabaseMigrationRunner, StartUpDatabaseMigrationRunner>();
         services.AddTransient<IDatabaseMigrationRunner, DatabaseMigrationRunner>();
         services.AddTransient<IMongoMigration, MongoMigration>();
+        services.AddHostedService<MongoMigrationService>();
     }
 }
