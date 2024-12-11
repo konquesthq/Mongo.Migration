@@ -7,7 +7,6 @@ using Mongo.Migration.Migrations.Database;
 using Mongo.Migration.Migrations.Document;
 using Mongo.Migration.Migrations.Locators;
 using Mongo.Migration.Services;
-using Mongo.Migration.Services.Interceptors;
 
 using MongoDB.Driver;
 
@@ -61,12 +60,10 @@ namespace Mongo.Migration.Startup.Static
 
             this._containerAdapter.Register<IDocumentVersionService, DocumentVersionService>();
             this._containerAdapter.Register<IDatabaseVersionService, DatabaseVersionService>();
-            this._containerAdapter.Register<IMigrationInterceptorFactory, MigrationInterceptorFactory>();
             this._containerAdapter.Register<DocumentVersionSerializer, DocumentVersionSerializer>();
 
             this._containerAdapter.Register<IStartUpDocumentMigrationRunner, StartUpDocumentMigrationRunner>();
             this._containerAdapter.Register<IDocumentMigrationRunner, DocumentMigrationRunner>();
-            this._containerAdapter.Register<IMigrationInterceptorProvider, MigrationInterceptorProvider>();
 
             this._containerAdapter.Register<IStartUpDatabaseMigrationRunner, StartUpDatabaseMigrationRunner>();
             this._containerAdapter.Register<IDatabaseMigrationRunner, DatabaseMigrationRunner>();

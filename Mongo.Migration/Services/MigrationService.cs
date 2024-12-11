@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Mongo.Migration.Documents.Serializers;
 using Mongo.Migration.Migrations.Database;
 using Mongo.Migration.Migrations.Document;
-using Mongo.Migration.Services.Interceptors;
 
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -15,8 +14,6 @@ namespace Mongo.Migration.Services
     {
         private readonly ILogger<MigrationService> _logger;
 
-        private readonly IMigrationInterceptorProvider _provider;
-
         private readonly DocumentVersionSerializer _serializer;
 
         private readonly IStartUpDatabaseMigrationRunner _startUpDatabaseMigrationRunner;
@@ -25,10 +22,9 @@ namespace Mongo.Migration.Services
 
         public MigrationService(
             DocumentVersionSerializer serializer,
-            IMigrationInterceptorProvider provider,
             IStartUpDocumentMigrationRunner startUpDocumentMigrationRunner,
             IStartUpDatabaseMigrationRunner startUpDatabaseMigrationRunner)
-            : this(serializer, provider, NullLoggerFactory.Instance)
+            : this(serializer, NullLoggerFactory.Instance)
         {
             this._startUpDocumentMigrationRunner = startUpDocumentMigrationRunner;
             this._startUpDatabaseMigrationRunner = startUpDatabaseMigrationRunner;
@@ -36,19 +32,15 @@ namespace Mongo.Migration.Services
 
         private MigrationService(
             DocumentVersionSerializer serializer,
-            IMigrationInterceptorProvider provider,
             ILoggerFactory loggerFactory)
         {
             this._serializer = serializer;
-            this._provider = provider;
             this._logger = loggerFactory.CreateLogger<MigrationService>();
         }
 
         public void Migrate()
         {
-            BsonSerializer.RegisterSerializationProvider(this._provider);
             this.RegisterSerializer();
-
             this.OnStartup();
         }
 
