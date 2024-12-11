@@ -9,18 +9,15 @@ namespace Mongo.Migration
         private readonly ICollectionLocator _collectionLocator;
         private readonly IDatabaseTypeMigrationDependencyLocator _databaseMigrationLocator;
         private readonly IMigrationService _migrationService;
-        private readonly IRuntimeVersionLocator _runtimeVersionLocator;
         private readonly IStartUpVersionLocator _startUpVersionLocator;
 
         public MongoMigration(
             IDatabaseTypeMigrationDependencyLocator databaseMigrationLocator,
-            IRuntimeVersionLocator runtimeVersionLocator,
             ICollectionLocator collectionLocator,
             IStartUpVersionLocator startUpVersionLocator,
             IMigrationService migrationService)
         {
             this._databaseMigrationLocator = databaseMigrationLocator;
-            this._runtimeVersionLocator = runtimeVersionLocator;
             this._collectionLocator = collectionLocator;
             this._startUpVersionLocator = startUpVersionLocator;
             this._migrationService = migrationService;
@@ -29,10 +26,8 @@ namespace Mongo.Migration
         public void Run()
         {
             this._databaseMigrationLocator.Locate();
-            this._runtimeVersionLocator.Locate();
             this._collectionLocator.Locate();
             this._startUpVersionLocator.Locate();
-
             this._migrationService.Migrate();
         }
     }
