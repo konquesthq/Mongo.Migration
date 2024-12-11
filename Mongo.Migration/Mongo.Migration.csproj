@@ -2,12 +2,12 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Platforms>x64</Platforms>
-    <Company>Sherweb</Company>
-    <Authors>Sherweb</Authors>
-    <Product>Office Protect</Product>
-    <PackageId>OfficeProtect.Mongo.Migration</PackageId>
+    <Company>Konquest</Company>
+    <Authors>Konquest</Authors>
+    <Product>Konquest</Product>
+    <PackageId>Konquest.Mongo.Migration</PackageId>
     <Description>Forked from Mongo.Migration which is designed for MongoDB C# Driver to migrate your documents easily on-the-fly.</Description>
-    <RepositoryUrl>https://github.com/sherweb/Mongo.Migration.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/konquesthq/Mongo.Migration.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageIcon>op-icon.png</PackageIcon>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

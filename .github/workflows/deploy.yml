@@ -1,0 +1,32 @@
+name: Deploy to Prod Environment
+
+on:
+  workflow_run:
+    workflows: ["Build and Test"]
+    branches: [main]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
+      - uses: konquesthq/action-workflow-run-wait@v1.4.2 #Ensures on workflow_run are successful before proceeding
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore -c Release
+      - name: Authenticate
+        run: dotnet nuget add source --username konquesthq --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/konquesthq/index.json
+      - name: Package
+        run: dotnet pack --configuration Release
+      - name: Publish
+        run: dotnet nuget push "bin/Release/Mongo.Migration.1.0.0.nupkg" --source "github"
