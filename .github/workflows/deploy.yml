@@ -29,4 +29,4 @@ jobs:
       - name: Package
         run: dotnet pack --configuration Release
       - name: Publish
-        run: dotnet nuget push "Mongo.Migration/bin/Release/Konquest.Mongo.Migration.1.1.0.nupkg" --source "github"
+        run: dotnet nuget push "Mongo.Migration/bin/Release/Konquest.Mongo.Migration.1.1.1.nupkg" --source "github"
