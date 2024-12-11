@@ -12,20 +12,20 @@ namespace Mongo.Migration.Test.Core
         [SetUp]
         public void SetUp()
         {
-            this.OnSetUp();
+            OnSetUp();
         }
 
         [TearDown]
         public void TearDown()
         {
-            this.Dispose();
+            Dispose();
         }
 
         [Test]
         public void Then_serializer_is_registered()
         {
             // Arrange 
-            var migrationService = this._components.Get<IMigrationService>();
+            var migrationService = Components.Get<IMigrationService>();
 
             // Act
             migrationService.Migrate();

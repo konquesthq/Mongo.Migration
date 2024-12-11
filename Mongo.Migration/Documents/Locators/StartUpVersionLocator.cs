@@ -10,12 +10,12 @@ namespace Mongo.Migration.Documents.Locators
     {
         public override DocumentVersion? GetLocateOrNull(Type identifier)
         {
-            if (!this.LocatesDictionary.ContainsKey(identifier))
+            if (!LocatesDictionary.ContainsKey(identifier))
             {
                 return null;
             }
 
-            this.LocatesDictionary.TryGetValue(identifier, out var value);
+            LocatesDictionary.TryGetValue(identifier, out var value);
             return value;
         }
 
@@ -36,7 +36,7 @@ namespace Mongo.Migration.Documents.Locators
                 versions.Add(type.Type, version);
             }
 
-            this.LocatesDictionary = versions;
+            LocatesDictionary = versions;
         }
     }
 }

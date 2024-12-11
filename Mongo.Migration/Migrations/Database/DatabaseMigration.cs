@@ -10,7 +10,7 @@ namespace Mongo.Migration.Migrations.Database
     {
         protected DatabaseMigration(string version)
         {
-            this.Version = version;
+            Version = version;
         }
 
         public DocumentVersion Version { get; }

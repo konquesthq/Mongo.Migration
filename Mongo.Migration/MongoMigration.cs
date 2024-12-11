@@ -17,18 +17,18 @@ namespace Mongo.Migration
             IStartUpVersionLocator startUpVersionLocator,
             IMigrationService migrationService)
         {
-            this._databaseMigrationLocator = databaseMigrationLocator;
-            this._collectionLocator = collectionLocator;
-            this._startUpVersionLocator = startUpVersionLocator;
-            this._migrationService = migrationService;
+            _databaseMigrationLocator = databaseMigrationLocator;
+            _collectionLocator = collectionLocator;
+            _startUpVersionLocator = startUpVersionLocator;
+            _migrationService = migrationService;
         }
 
         public void Run()
         {
-            this._databaseMigrationLocator.Locate();
-            this._collectionLocator.Locate();
-            this._startUpVersionLocator.Locate();
-            this._migrationService.Migrate();
+            _databaseMigrationLocator.Locate();
+            _collectionLocator.Locate();
+            _startUpVersionLocator.Locate();
+            _migrationService.Migrate();
         }
     }
 }

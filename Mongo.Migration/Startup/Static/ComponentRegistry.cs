@@ -16,43 +16,43 @@ namespace Mongo.Migration.Startup.Static
 
         public ComponentRegistry(IMongoMigrationSettings settings, IContainerAdapter containerAdapter = null)
         {
-            this._settings = settings;
+            _settings = settings;
 
             if (containerAdapter == null)
             {
                 containerAdapter = new LightInjectAdapter(new ServiceContainer());
             }
 
-            this._containerAdapter = containerAdapter;
+            _containerAdapter = containerAdapter;
         }
 
         public void RegisterComponents(IMongoClient client)
         {
-            this.RegisterDefaults();
+            RegisterDefaults();
 
-            this._containerAdapter.RegisterInstance<IMongoClient>(client);
+            _containerAdapter.RegisterInstance<IMongoClient>(client);
 
-            this._containerAdapter.Register<IMigrationService, MigrationService>();
+            _containerAdapter.Register<IMigrationService, MigrationService>();
         }
 
         public TComponent Get<TComponent>()
             where TComponent : class
         {
-            return (TComponent)this._containerAdapter.GetInstance(typeof(TComponent));
+            return (TComponent)_containerAdapter.GetInstance(typeof(TComponent));
         }
 
         private void RegisterDefaults()
         {
-            this._containerAdapter.RegisterInstance<IContainerProvider>(this._containerAdapter);
-            this._containerAdapter.Register(typeof(IMigrationLocator<>), typeof(TypeMigrationDependencyLocator<>));
-            this._containerAdapter.RegisterInstance<IMongoMigrationSettings>(this._settings);
-            this._containerAdapter.RegisterSingleton<ICollectionLocator, CollectionLocator>();
-            this._containerAdapter.RegisterSingleton<IDatabaseTypeMigrationDependencyLocator, DatabaseTypeMigrationDependencyLocator>();
-            this._containerAdapter.RegisterSingleton<IStartUpVersionLocator, StartUpVersionLocator>();
-            this._containerAdapter.Register<IDatabaseVersionService, DatabaseVersionService>();
-            this._containerAdapter.Register<IStartUpDatabaseMigrationRunner, StartUpDatabaseMigrationRunner>();
-            this._containerAdapter.Register<IDatabaseMigrationRunner, DatabaseMigrationRunner>();
-            this._containerAdapter.Register<IMongoMigration, MongoMigration>();
+            _containerAdapter.RegisterInstance<IContainerProvider>(_containerAdapter);
+            _containerAdapter.Register(typeof(IMigrationLocator<>), typeof(TypeMigrationDependencyLocator<>));
+            _containerAdapter.RegisterInstance<IMongoMigrationSettings>(_settings);
+            _containerAdapter.RegisterSingleton<ICollectionLocator, CollectionLocator>();
+            _containerAdapter.RegisterSingleton<IDatabaseTypeMigrationDependencyLocator, DatabaseTypeMigrationDependencyLocator>();
+            _containerAdapter.RegisterSingleton<IStartUpVersionLocator, StartUpVersionLocator>();
+            _containerAdapter.Register<IDatabaseVersionService, DatabaseVersionService>();
+            _containerAdapter.Register<IStartUpDatabaseMigrationRunner, StartUpDatabaseMigrationRunner>();
+            _containerAdapter.Register<IDatabaseMigrationRunner, DatabaseMigrationRunner>();
+            _containerAdapter.Register<IMongoMigration, MongoMigration>();
         }
     }
 }

@@ -12,22 +12,22 @@ namespace Mongo.Migration.Services
         public MigrationService(IStartUpDatabaseMigrationRunner startUpDatabaseMigrationRunner)
             : this(NullLoggerFactory.Instance)
         {
-            this._startUpDatabaseMigrationRunner = startUpDatabaseMigrationRunner;
+            _startUpDatabaseMigrationRunner = startUpDatabaseMigrationRunner;
         }
 
         private MigrationService(ILoggerFactory loggerFactory)
         {
-            this._logger = loggerFactory.CreateLogger<MigrationService>();
+            _logger = loggerFactory.CreateLogger<MigrationService>();
         }
 
         public void Migrate()
         {
-            this.OnStartup();
+            OnStartup();
         }
 
         private void OnStartup()
         {
-            this._startUpDatabaseMigrationRunner.RunAll();
+            _startUpDatabaseMigrationRunner.RunAll();
         }
     }
 }

@@ -11,28 +11,29 @@ namespace Mongo.Migration.Test
 {
     public class IntegrationTest : IDisposable
     {
-        protected IMongoClient _client;
+        protected IMongoClient Client;
 
-        protected IComponentRegistry _components;
+        protected IComponentRegistry Components;
 
-        protected MongoDbRunner _mongoToGoRunner;
+        protected MongoDbRunner MongoToGoRunner;
 
         public void Dispose()
         {
-            this._mongoToGoRunner?.Dispose();
+            MongoToGoRunner?.Dispose();
         }
 
         protected void OnSetUp()
         {
-            this._mongoToGoRunner = MongoDbRunner.Start();
-            this._client = new MongoClient(this._mongoToGoRunner.ConnectionString);
-
-            this._client.GetDatabase("PerformanceTest").CreateCollection("Test");
-
-            this._components = new ComponentRegistry(
+            MongoToGoRunner = MongoDbRunner.Start();
+            Client = new MongoClient(MongoToGoRunner.ConnectionString);
+            Client.GetDatabase("PerformanceTest").CreateCollection("Test");
+            Components = new ComponentRegistry(
                 new MongoMigrationSettings
-                    { ConnectionString = this._mongoToGoRunner.ConnectionString, Database = "PerformanceTest" });
-            this._components.RegisterComponents(this._client);
+                {
+                    ConnectionString = MongoToGoRunner.ConnectionString, Database = "PerformanceTest"
+                }
+            );
+            Components.RegisterComponents(Client);
         }
     }
 }
