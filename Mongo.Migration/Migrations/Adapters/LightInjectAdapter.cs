@@ -1,45 +1,43 @@
 using System;
-
 using LightInject;
 
-namespace Mongo.Migration.Migrations.Adapters
+namespace Mongo.Migration.Migrations.Adapters;
+
+public class LightInjectAdapter : IContainerAdapter
 {
-    public class LightInjectAdapter : IContainerAdapter
+    private readonly IServiceContainer _container;
+
+    public LightInjectAdapter(IServiceContainer container)
     {
-        private readonly IServiceContainer _container;
+        _container = container;
+    }
 
-        public LightInjectAdapter(IServiceContainer container)
-        {
-            _container = container;
-        }
+    public object GetInstance(Type type)
+    {
+        return _container.GetInstance(type);
+    }
 
-        public object GetInstance(Type type)
-        {
-            return _container.GetInstance(type);
-        }
+    public void Register<TInterface, TImplementation>()
+        where TInterface : class
+        where TImplementation : class, TInterface
+    {
+        _container.Register<TInterface, TImplementation>();
+    }
 
-        public void Register<TInterface, TImplementation>()
-            where TInterface : class
-            where TImplementation : class, TInterface
-        {
-            _container.Register<TInterface, TImplementation>();
-        }
+    public void Register(Type serviceType, Type implementingType)
+    {
+        _container.Register(serviceType, implementingType);
+    }
 
-        public void Register(Type serviceType, Type implementingType)
-        {
-            _container.Register(serviceType, implementingType);
-        }
+    public void RegisterInstance<TInterface>(object instance)
+    {
+        _container.RegisterInstance(typeof(TInterface), instance);
+    }
 
-        public void RegisterInstance<TInterface>(object instance)
-        {
-            _container.RegisterInstance(typeof(TInterface), instance);
-        }
-
-        public void RegisterSingleton<TInterface, TImplementation>()
-            where TInterface : class
-            where TImplementation : class, TInterface
-        {
-            _container.Register<TInterface, TImplementation>(new PerContainerLifetime());
-        }
+    public void RegisterSingleton<TInterface, TImplementation>()
+        where TInterface : class
+        where TImplementation : class, TInterface
+    {
+        _container.Register<TInterface, TImplementation>(new PerContainerLifetime());
     }
 }

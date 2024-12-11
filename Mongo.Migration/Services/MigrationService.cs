@@ -1,33 +1,16 @@
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Mongo.Migration.Migrations.Database;
 
-namespace Mongo.Migration.Services
+namespace Mongo.Migration.Services;
+
+internal class MigrationService(IStartUpDatabaseMigrationRunner startUpDatabaseMigrationRunner) : IMigrationService
 {
-    internal class MigrationService : IMigrationService
+    public void Migrate()
     {
-        private readonly ILogger<MigrationService> _logger;
-        private readonly IStartUpDatabaseMigrationRunner _startUpDatabaseMigrationRunner;
+        OnStartup();
+    }
 
-        public MigrationService(IStartUpDatabaseMigrationRunner startUpDatabaseMigrationRunner)
-            : this(NullLoggerFactory.Instance)
-        {
-            _startUpDatabaseMigrationRunner = startUpDatabaseMigrationRunner;
-        }
-
-        private MigrationService(ILoggerFactory loggerFactory)
-        {
-            _logger = loggerFactory.CreateLogger<MigrationService>();
-        }
-
-        public void Migrate()
-        {
-            OnStartup();
-        }
-
-        private void OnStartup()
-        {
-            _startUpDatabaseMigrationRunner.RunAll();
-        }
+    private void OnStartup()
+    {
+        startUpDatabaseMigrationRunner.RunAll();
     }
 }

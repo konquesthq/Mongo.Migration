@@ -6,58 +6,57 @@ using System.Reflection;
 using Mongo.Migration.Extensions;
 using Mongo.Migration.Migrations.Adapters;
 
-namespace Mongo.Migration.Migrations.Locators
+namespace Mongo.Migration.Migrations.Locators;
+
+internal class TypeMigrationDependencyLocator<TMigrationType> : MigrationLocator<TMigrationType>
+    where TMigrationType : class, IMigration
 {
-    internal class TypeMigrationDependencyLocator<TMigrationType> : MigrationLocator<TMigrationType>
-        where TMigrationType : class, IMigration
+    private readonly IContainerProvider _containerProvider;
+
+    public TypeMigrationDependencyLocator(IContainerProvider containerProvider)
     {
-        private readonly IContainerProvider _containerProvider;
+        _containerProvider = containerProvider;
+    }
 
-        public TypeMigrationDependencyLocator(IContainerProvider containerProvider)
+    public override void Locate()
+    {
+        var migrationTypes =
+            (from assembly in Assemblies
+                from type in assembly.GetTypes()
+                where typeof(TMigrationType).IsAssignableFrom(type) && !type.IsAbstract
+                select type).Distinct(new TypeComparer());
+
+        Migrations = migrationTypes.Select(GetMigrationInstance).ToMigrationDictionary();
+    }
+
+    private TMigrationType GetMigrationInstance(Type type)
+    {
+        ConstructorInfo constructor = type.GetConstructors()[0];
+
+        if (constructor != null)
         {
-            _containerProvider = containerProvider;
+            object[] args = constructor
+                .GetParameters()
+                .Select(o => o.ParameterType)
+                .Select(o => _containerProvider.GetInstance(o))
+                .ToArray();
+
+            return Activator.CreateInstance(type, args) as TMigrationType;
         }
 
-        public override void Locate()
-        {
-            var migrationTypes =
-                (from assembly in Assemblies
-                 from type in assembly.GetTypes()
-                 where typeof(TMigrationType).IsAssignableFrom(type) && !type.IsAbstract
-                 select type).Distinct(new TypeComparer());
+        return Activator.CreateInstance(type) as TMigrationType;
+    }
 
-            Migrations = migrationTypes.Select(GetMigrationInstance).ToMigrationDictionary();
+    private class TypeComparer : IEqualityComparer<Type>
+    {
+        public bool Equals(Type x, Type y)
+        {
+            return x.AssemblyQualifiedName == y.AssemblyQualifiedName;
         }
 
-        private TMigrationType GetMigrationInstance(Type type)
+        public int GetHashCode(Type obj)
         {
-            ConstructorInfo constructor = type.GetConstructors()[0];
-
-            if (constructor != null)
-            {
-                object[] args = constructor
-                    .GetParameters()
-                    .Select(o => o.ParameterType)
-                    .Select(o => _containerProvider.GetInstance(o))
-                    .ToArray();
-
-                return Activator.CreateInstance(type, args) as TMigrationType;
-            }
-
-            return Activator.CreateInstance(type) as TMigrationType;
-        }
-
-        private class TypeComparer : IEqualityComparer<Type>
-        {
-            public bool Equals(Type x, Type y)
-            {
-                return x.AssemblyQualifiedName == y.AssemblyQualifiedName;
-            }
-
-            public int GetHashCode(Type obj)
-            {
-                return obj.AssemblyQualifiedName.GetHashCode();
-            }
+            return obj.AssemblyQualifiedName.GetHashCode();
         }
     }
 }

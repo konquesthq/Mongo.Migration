@@ -4,32 +4,24 @@ using System.Collections.Generic;
 using Mongo.Migration.Migrations.Adapters;
 using Mongo.Migration.Migrations.Database;
 
-namespace Mongo.Migration.Migrations.Locators
+namespace Mongo.Migration.Migrations.Locators;
+
+internal class DatabaseTypeMigrationDependencyLocator(IContainerProvider containerProvider)
+    : TypeMigrationDependencyLocator<IDatabaseMigration>(containerProvider), IDatabaseTypeMigrationDependencyLocator
 {
-    internal class DatabaseTypeMigrationDependencyLocator : TypeMigrationDependencyLocator<IDatabaseMigration>, IDatabaseTypeMigrationDependencyLocator
+    private IDictionary<Type, IReadOnlyCollection<IDatabaseMigration>> _migrations;
+
+    protected override IDictionary<Type, IReadOnlyCollection<IDatabaseMigration>> Migrations
     {
-        private IDictionary<Type, IReadOnlyCollection<IDatabaseMigration>> _migrations;
-
-        protected override IDictionary<Type, IReadOnlyCollection<IDatabaseMigration>> Migrations
+        get
         {
-            get
+            if (_migrations == null)
             {
-                if (_migrations == null)
-                {
-                    Locate();
-                }
-
-                return _migrations;
+                Locate();
             }
-            set
-            {
-                _migrations = value;
-            }
-        }
 
-        public DatabaseTypeMigrationDependencyLocator(IContainerProvider containerProvider)
-            : base(containerProvider)
-        {
+            return _migrations;
         }
+        set => _migrations = value;
     }
 }
