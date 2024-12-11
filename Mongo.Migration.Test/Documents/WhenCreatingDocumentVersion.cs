@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Mongo.Migration.Test.Core
 {
     [TestFixture]
-    public class DocumentVersion_When_creating
+    public class WhenCreatingDocumentVersion
     {
         [Test]
         public void If_Default_Then_version_is_default_value()
