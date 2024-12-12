@@ -5,8 +5,8 @@
     <Company>Konquest</Company>
     <Authors>Konquest</Authors>
     <Product>Konquest</Product>
-    <Version>1.1.1</Version>
-    <PackageVersion>1.1.1</PackageVersion>
+    <Version>1.1.2</Version>
+    <PackageVersion>1.1.2</PackageVersion>
     <PackageId>Konquest.Mongo.Migration</PackageId>
     <Description>Forked from Mongo.Migration which is designed for MongoDB C# Driver to migrate your documents easily on-the-fly.</Description>
     <RepositoryUrl>https://github.com/konquesthq/Mongo.Migration.git</RepositoryUrl>
@@ -29,6 +29,7 @@
     <PackageReference Include="Microsoft.AspNetCore.MiddlewareAnalysis" Version="6.0.16" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="MongoDB.Driver" Version="3.1.0" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.30.0" />
     <PackageReference Include="NLog" Version="5.2.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <None Include="op-icon.png" Pack="true" PackagePath="" />
