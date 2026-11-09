@@ -5,8 +5,8 @@
     <Company>Konquest</Company>
     <Authors>Konquest</Authors>
     <Product>Konquest</Product>
-    <Version>1.1.2</Version>
-    <PackageVersion>1.1.2</PackageVersion>
+    <Version>1.1.3</Version>
+    <PackageVersion>1.1.3</PackageVersion>
     <PackageId>Konquest.Mongo.Migration</PackageId>
     <Description>Forked from Mongo.Migration which is designed for MongoDB C# Driver to migrate your documents easily on-the-fly.</Description>
     <RepositoryUrl>https://github.com/konquesthq/Mongo.Migration.git</RepositoryUrl>
