@@ -8,13 +8,15 @@ using Microsoft.Extensions.Logging;
 namespace Mongo.Migration.Startup.DotNetCore;
 
 public class MongoMigrationService(IServiceScopeFactory serviceScopeFactory, ILoggerFactory loggerFactory)
-    : BackgroundService
+    : IHostedService
 {
     private readonly ILogger<MongoMigrationService> _logger = loggerFactory.CreateLogger<MongoMigrationService>();
     private readonly IMongoMigration _migration =
         serviceScopeFactory.CreateScope().ServiceProvider.GetService<IMongoMigration>();
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    // Runs in StartAsync rather than BackgroundService.ExecuteAsync so the host doesn't finish starting
+    // (and serve requests) until migrations are done. From .NET 10, ExecuteAsync no longer blocks startup.
+    public Task StartAsync(CancellationToken cancellationToken)
     {
         try
         {
@@ -32,4 +34,6 @@ public class MongoMigrationService(IServiceScopeFactory serviceScopeFactory, ILo
         
         return Task.CompletedTask;
     }
+
+    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 }
